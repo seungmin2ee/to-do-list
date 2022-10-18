@@ -21,11 +21,18 @@ const AddList = () => {
     isInputSet("");
   };
 
+  const handleEnterAdd = (event) => {
+    if(event.key === 'Enter'){
+      handleClickAdd();
+    }
+  }
+
   return (
     <div className="addList_input">
       <input
         value={isInput}
         onChange={handleChangeInput}
+        onKeyPress={handleEnterAdd}
         placeholder="add your list..."
       ></input>
       <button onClick={handleClickAdd}>

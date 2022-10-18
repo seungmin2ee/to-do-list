@@ -34,6 +34,12 @@ const List = ({list}) => {
     isEditSet(false);
   };
 
+  const handleEnterEdit = (event, listId) => {
+    if(event.key === 'Enter'){
+      handleUpdate(listId);
+    }
+  }
+
   const handleEditList = (event) => {
     isChangeSet(event.target.value);
   };
@@ -49,7 +55,7 @@ const List = ({list}) => {
       </div>
       <div className="list_content">
         {isEdit ? (
-          <input type="text" value={isChange} onChange={handleEditList} autoFocus></input>
+          <input type="text" value={isChange} onChange={handleEditList} onKeyPress={(event) => {handleEnterEdit(event, list.id)}} autoFocus></input>
         ) : (
           list.content
         )}
