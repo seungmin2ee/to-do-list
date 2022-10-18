@@ -6,18 +6,12 @@ export const fetchCreate = (url, data) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     })
-    .then(() => {
-        window.location.href = BASE_URL;
-    })
     .catch(err => console.log(err.message));
 }
 
 export const fetchDelete = (url) => {
     fetch(url, {
         method: 'DELETE',
-    })
-    .then(() => {
-        window.location.href = BASE_URL;
     })
     .then(err => console.log(err.message));
 }
@@ -27,9 +21,6 @@ export const fetchPatch = (url, data) => {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
-    })
-    .then(() => {
-        window.location.href = BASE_URL;
     })
     .catch(err => console.log(err.message));
 }

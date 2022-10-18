@@ -5,7 +5,7 @@ import Loading from "./components/Loading";
 import useFetch from "./util/useFetch";
 
 function App() {
-  const [isData, isPending] = useFetch('http://localhost:3001/lists')
+  const [isData, isPending] = useFetch('http://localhost:3001/lists');
 
   return (
     <div className="App">
