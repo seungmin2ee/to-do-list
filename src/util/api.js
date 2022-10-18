@@ -1,5 +1,3 @@
-const BASE_URL = 'http://localhost:3000/';
-
 export const fetchCreate = (url, data) => {
     fetch(url, {
         method: 'POST',
@@ -13,7 +11,7 @@ export const fetchDelete = (url) => {
     fetch(url, {
         method: 'DELETE',
     })
-    .then(err => console.log(err.message));
+    .catch(err => console.log("Error",err.message));
 }
 
 export const fetchPatch = (url, data) => {

@@ -16,12 +16,11 @@ const CheckBox = styled.span`
 `;
 
 const List = ({list}) => {
-  const [isChecked, isCheckedSet] = useState(list.checked);
   const [isEdit, isEditSet] = useState(false);
   const [isChange, isChangeSet] = useState(list.content);
 
   const handleCheck = (listId) => {
-    if(isChecked){
+    if(list.checked === true){
       fetchPatch(`http://localhost:3001/lists/${listId}`, {checked: false});
     } else{
       fetchPatch(`http://localhost:3001/lists/${listId}`, {checked: true});
