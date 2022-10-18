@@ -15,7 +15,7 @@ const CheckBox = styled.span`
   background: ${(props) => (props.color ? props.color : "white")};
 `;
 
-const List = ({list}) => {
+const List = ({list, reRendering}) => {
   const [isEdit, isEditSet] = useState(false);
   const [isChange, isChangeSet] = useState(list.content);
 
@@ -25,11 +25,13 @@ const List = ({list}) => {
     } else{
       fetchPatch(`http://localhost:3001/lists/${listId}`, {checked: true});
     }
+    reRendering();
   };
   
   const handleUpdate = (listId) => {
     const updatedData = {content: isChange};
     fetchPatch(`http://localhost:3001/lists/${listId}`, updatedData);
+    reRendering();
     isEditSet(false);
   };
 
@@ -45,6 +47,7 @@ const List = ({list}) => {
 
   const handleDelete = (listId) => {
     fetchDelete(`http://localhost:3001/lists/${listId}`);
+    reRendering();
   };
 
   return (
@@ -65,7 +68,7 @@ const List = ({list}) => {
           <FontAwesomeIcon icon={faPen} />
         </button>
         :
-        <button onClick={() => {handleUpdate(list.id)}}>
+        <button onClick={() => handleUpdate(list.id)}>
           <FontAwesomeIcon icon={faCheck} />
         </button>
         }

@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(true);
+  const [isRendering, setIsRendering] = useState(false);
+
+  const reRendering = () => {
+    setIsRendering(!isRendering)
+  };
 
   useEffect(() => {
     fetch(url)
@@ -15,9 +20,9 @@ const useFetch = (url) => {
         setIsPending(false);
         console.log(err.message);
     })
-  },[data]);
+  },[isRendering]);
 
-  return [data, isPending]
+  return [data, isPending, reRendering]
 };
 
 export default useFetch;

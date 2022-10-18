@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { fetchCreate } from "../util/api";
 
-const AddList = () => {
+const AddList = ({reRendering}) => {
   const [isInput, isInputSet] = useState("");
 
   const handleChangeInput = (event) => {
@@ -18,6 +18,7 @@ const AddList = () => {
 
     isInput !== "" ? 
     fetchCreate('http://localhost:3001/lists/', list) : alert("내용을 입력하세요.");
+    reRendering();
     isInputSet("");
   };
 
