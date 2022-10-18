@@ -1,11 +1,11 @@
-import { useState } from "react";
 import "./App.css";
 import AddList from "./components/AddList";
 import Lists from "./components/Lists";
-import data from "./data/data";
+import Loading from "./components/Loading";
+import useFetch from "./util/useFetch";
 
 function App() {
-  const [isData, isDataSet] = useState(data);
+  const [isData, isPending] = useFetch('http://localhost:3001/lists')
 
   return (
     <div className="App">
@@ -14,11 +14,13 @@ function App() {
       </header>
       <main>
         <section className="main_container">
-          <AddList isData={isData} isDataSet={isDataSet} />
+          <AddList />
           <div className="list_container">
-            {isData.length !== 0 ?
-            <Lists isData={isData} isDataSet={isDataSet} />
-            : <div className="blank">할 일을 추가해보세요!</div>}
+            {isPending ? <Loading />
+            : isData.length !== 0 ?
+            <Lists isData={isData}/>
+            : <div className="blank">할 일을 추가해보세요!</div>
+            }
           </div>
         </section>
       </main>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { fetchCreate } from "../util/api";
 
-const AddList = ({ isData, isDataSet }) => {
+const AddList = () => {
   const [isInput, isInputSet] = useState("");
 
   const handleChangeInput = (event) => {
@@ -11,11 +12,12 @@ const AddList = ({ isData, isDataSet }) => {
 
   const handleClickAdd = () => {
     const list = {
-      id: Date.now(),
       content: isInput,
+      checked: false
     };
 
-    isInput !== "" ? isDataSet([list, ...isData]) : alert("내용을 입력하세요.");
+    isInput !== "" ? 
+    fetchCreate('http://localhost:3001/lists/', list) : alert("내용을 입력하세요.");
     isInputSet("");
   };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { fetchDelete, fetchPatch } from "../util/api";
 
 
 const CheckBox = styled.span`
@@ -14,25 +15,23 @@ const CheckBox = styled.span`
   background: ${(props) => (props.color ? props.color : "white")};
 `;
 
-const List = ({ list, isData, isDataSet }) => {
-  const [isChecked, isCheckedSet] = useState(false);
+const List = ({list}) => {
+  const [isChecked, isCheckedSet] = useState(list.checked);
   const [isEdit, isEditSet] = useState(false);
   const [isChange, isChangeSet] = useState(list.content);
 
-  const handleCheck = () => {
-    isCheckedSet(!isChecked);
-  };
-
-  const handleEdit = (listId) => {
-    isEditSet(!isEdit);
-    if(isEdit){
-      isDataSet(
-        isData.map((data) => {
-          if (data.id === listId) data.content = isChange;
-          return data;
-        })
-      );
+  const handleCheck = (listId) => {
+    if(isChecked){
+      fetchPatch(`http://localhost:3001/lists/${listId}`, {checked: false});
+    } else{
+      fetchPatch(`http://localhost:3001/lists/${listId}`, {checked: true});
     }
+  };
+  
+  const handleUpdate = (listId) => {
+    const updatedData = {content: isChange};
+    fetchPatch(`http://localhost:3001/lists/${listId}`, updatedData);
+    isEditSet(false);
   };
 
   const handleEditList = (event) => {
@@ -40,13 +39,13 @@ const List = ({ list, isData, isDataSet }) => {
   };
 
   const handleDelete = (listId) => {
-    isDataSet(isData.filter((el) => el.id !== listId));
+    fetchDelete(`http://localhost:3001/lists/${listId}`);
   };
 
   return (
-    <li className={isChecked ? "list checked" : "list"}>
-      <div className="checkbox" onClick={handleCheck} >
-        <CheckBox color={isChecked ? "#C4B3FF" : "#fff"}/>
+    <li className={list.checked ? "list checked" : "list"}>
+      <div className="checkbox" onClick={() => {handleCheck(list.id)}} >
+        <CheckBox color={list.checked ? "#C4B3FF" : "#fff"}/>
       </div>
       <div className="list_content">
         {isEdit ? (
@@ -56,9 +55,15 @@ const List = ({ list, isData, isDataSet }) => {
         )}
       </div>
       <div className="list_buttons">
-        <button onClick={() => handleEdit(list.id)}>
-          <FontAwesomeIcon icon={ isEdit ? faCheck : faPen } />
+        {!isEdit ? 
+        <button onClick={() => isEditSet(true)}>
+          <FontAwesomeIcon icon={faPen} />
         </button>
+        :
+        <button onClick={() => {handleUpdate(list.id)}}>
+          <FontAwesomeIcon icon={faCheck} />
+        </button>
+        }
         <button onClick={() => handleDelete(list.id)}>
           <FontAwesomeIcon icon={faTrash} />
         </button>
